@@ -9,3 +9,7 @@ func TestIsNumeric(t *testing.T) {
 func TestNumberFormat(t *testing.T) {
 	t.Log(NumberFormat(34234.232434323, 2))
 }
+
+func TestRound(t *testing.T) {
+	t.Log(Round(334.53474, 3))
+}

@@ -2,76 +2,13 @@ package helper
 
 import (
 	"fmt"
+	"math"
+	"math/rand"
 	"strconv"
+	"time"
 )
 
-// IsNumeric - Finds whether a variable is a number or a numeric string
-func IsNumeric(x interface{}) (result bool) {
-	//Figure out result
-	switch x.(type) {
-
-	case int, uint:
-		result = true
-	case int8, uint8:
-		result = true
-	case int16, uint16:
-		result = true
-	case int32, uint32:
-		result = true
-	case int64, uint64:
-		result = true
-
-	case float32, float64:
-		result = true
-
-	case complex64, complex128:
-		result = true
-
-	case string:
-		if xAsString, ok := x.(string); ok {
-			result = isStringNumeric(xAsString)
-		} else {
-			result = false
-		}
-
-	default:
-		result = false
-
-	}
-
-	return result
-}
-
-func isStringNumeric(x string) bool {
-
-	hasPeriod := false
-	for i, c := range x {
-		switch c {
-
-		case '-':
-			if i != 0 {
-				return false
-			}
-
-		case '.':
-			if hasPeriod {
-				return false
-			}
-			hasPeriod = true
-
-		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-			//Nothing here.
-
-		default:
-			return false
-
-		}
-	}
-
-	return true
-}
-
-// NumberFormat — Format a number with grouped thousands
+// NumberFormat — Format a number with grouped thousands, opts params:decimals, decPoint, thousandsSep
 func NumberFormat(number float64, opts ...interface{}) string {
 	decimals := 2
 	decPoint := "."
@@ -124,4 +61,27 @@ func NumberFormat(number float64, opts ...interface{}) string {
 		s = "-" + s
 	}
 	return s
+}
+
+// Rand Rand()
+// Range: [0, 2147483647]
+func Rand(min, max int) int {
+	if min > max {
+		panic("min: min cannot be greater than max")
+	}
+	// PHP: getRandMax()
+	if int31 := 1<<31 - 1; max > int31 {
+		panic("max: max can not be greater than " + strconv.Itoa(int31))
+	}
+	if min == max {
+		return min
+	}
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	return r.Intn(max+1-min) + min
+}
+
+// Round php round function
+func Round(value float64, precision int) float64 {
+	p := math.Pow10(precision)
+	return math.Trunc((value+0.5/p)*p) / p
 }

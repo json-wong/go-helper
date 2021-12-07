@@ -3,7 +3,6 @@ package helper
 import (
 	"math"
 	"reflect"
-	"sort"
 	"testing"
 )
 
@@ -16,11 +15,10 @@ func TestListIntersect(t *testing.T) {
 }
 
 // TestMapKeys
-func TestMapKeys(t *testing.T) {
-	input := map[string]interface{}{"foo": 123, "bar": "abc"}
-	expected := []string{"bar", "foo"}
-	output := MapKeys(input)
-	sort.Strings(output)
+func TestArrayKeys(t *testing.T) {
+	input := map[interface{}]interface{}{"foo": 123, "bar": "abc"}
+	expected := []interface{}{"foo", "bar"}
+	output := ArrayKeys(input)
 	if !reflect.DeepEqual(output, expected) {
 		t.Fatalf("output: %v, expected: %v", output, expected)
 	}
